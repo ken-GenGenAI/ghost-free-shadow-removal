@@ -1,5 +1,10 @@
-import tensorflow as tf
-import tensorflow.contrib.slim as slim
+# import tensorflow as tf
+from tensorflow.compat import v1 as tf
+tf.disable_v2_behavior()
+
+import tensorflow as tf2
+
+import tf_slim as slim
 import numpy as np
 import os,time,cv2,scipy.io
 
@@ -50,7 +55,7 @@ def identity_initializer():
 
 def se_block(input_feature, name, ratio=8):
     
-    kernel_initializer = tf.contrib.layers.variance_scaling_initializer()
+    kernel_initializer = tf2.keras.initializers.VarianceScaling()
     bias_initializer = tf.constant_initializer(value=0.0)
     with tf.variable_scope(name):
         channel = input_feature.get_shape()[-1]

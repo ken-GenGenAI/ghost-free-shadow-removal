@@ -9,7 +9,7 @@ import os
 import scipy.io
 import scipy.stats as st
 import sys
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import time
 
 EPS = 1e-12
@@ -35,6 +35,7 @@ class Deshadower(object):
 
             # build the model
             self.shadow_free_image,predicted_mask=build_aggasatt_joint(self.input, self.channel, vgg_19_path=self.vgg_19_path)
+            self.predicted_mask = tf.nn.sigmoid(predicted_mask)
 
             loss_mask = tf.reduce_mean(tf.keras.losses.binary_crossentropy(gtmask,tf.nn.sigmoid(predicted_mask)))
     
@@ -66,7 +67,7 @@ class Deshadower(object):
     def run(self, img):
         iminput = expand(img)
         st=time.time()
-        imoutput = self.sess.run([self.shadow_free_image],feed_dict={self.input:iminput})
+        imoutput = self.sess.run([self.shadow_free_image , self.predicted_mask],feed_dict={self.input:iminput})
         print("Test time  = %.3f " % (time.time()-st ))
-        imoutput=decode_image(imoutput)
+        imoutput=decode(imoutput)
         return imoutput 

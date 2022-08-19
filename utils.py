@@ -1,5 +1,5 @@
 import tensorflow as tf
-import tensorflow.contrib.slim as slim
+import tf_slim as slim
 import numpy as np
 import os,time,cv2,scipy.io,random
 from PIL import Image
@@ -25,7 +25,7 @@ def prepare_data(train_path, stage=['train_A']):
                     if is_image_file(fname):
                         input_names.append(os.path.join(train_b, fname))
     return input_names
-    
+
 def decode_image(img,resize=False,sz=(640,480)):
     imw,imh = sz
     img = np.squeeze(np.minimum(np.maximum(img,0.0),1.0))
