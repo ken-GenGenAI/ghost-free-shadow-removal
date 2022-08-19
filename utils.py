@@ -26,6 +26,16 @@ def prepare_data(train_path, stage=['train_A']):
                         input_names.append(os.path.join(train_b, fname))
     return input_names
 
+def decode(img_data):
+    if isinstance(img_data , list):
+        output_image = []
+        for img in img_data:
+            output_image.append(decode_image(img))
+        img_data = output_image
+    else:
+        img_data = decode_image(img_data)
+    return img_data
+
 def decode_image(img,resize=False,sz=(640,480)):
     imw,imh = sz
     img = np.squeeze(np.minimum(np.maximum(img,0.0),1.0))
